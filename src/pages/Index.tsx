@@ -29,27 +29,6 @@ const Index = () => {
     }
   ];
 
-  const testimonials = [
-    {
-      name: "Sarah Chen",
-      role: "Crochet Enthusiast",
-      content: "I've been crocheting for 15 years and this AI tool has opened up so many new possibilities! The patterns are detailed and creative.",
-      rating: 5
-    },
-    {
-      name: "Maria Rodriguez",
-      role: "Pattern Designer",
-      content: "As a professional pattern designer, I'm impressed by the quality and accuracy. It's like having a creative assistant.",
-      rating: 5
-    },
-    {
-      name: "Emma Thompson",
-      role: "Beginner Crocheter",
-      content: "I was intimidated to start crocheting, but these AI-generated patterns made it so easy to learn. Perfect for beginners!",
-      rating: 5
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-soft">
       <Navigation />
@@ -122,7 +101,7 @@ const Index = () => {
       <section className="container py-20 bg-card/50">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Why Choose CrochetAI?
+            Why Choose Yarney's World?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Experience the future of crochet pattern creation with our intelligent AI system designed specifically for crafters.
@@ -188,37 +167,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="container py-20 bg-card/50">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            What Crafters Say
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of happy crocheters who've discovered the joy of AI-generated patterns.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="shadow-card">
-              <CardContent className="pt-6">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Sparkles key={i} className="h-4 w-4 text-yellow-500 fill-current" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground mb-4 italic">"{testimonial.content}"</p>
-                <div>
-                  <p className="font-semibold text-foreground">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="container py-20">
         <div className="bg-gradient-primary rounded-2xl p-12 text-center text-primary-foreground shadow-soft">
@@ -253,7 +201,7 @@ const Index = () => {
                 <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center">
                   <Sparkles className="h-5 w-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-bold text-foreground">CrochetAI</span>
+                <span className="text-xl font-bold text-foreground">Yarney's World</span>
               </div>
               <p className="text-muted-foreground">
                 Empowering crafters with AI-generated crochet patterns that inspire creativity and bring ideas to life.
@@ -292,7 +240,7 @@ const Index = () => {
           </div>
           
           <div className="border-t mt-12 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 CrochetAI. All rights reserved. Made with ❤️ for crafters everywhere.</p>
+            <p>&copy; 2024 Yarney's World. All rights reserved. Made with ❤️ for crafters everywhere.</p>
           </div>
         </div>
       </footer>

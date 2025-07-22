@@ -22,7 +22,7 @@ const Navigation = () => {
           <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center">
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold text-foreground">CrochetAI</span>
+          <span className="text-xl font-bold text-foreground">Yarney's World</span>
         </Link>
 
         {/* Desktop Navigation */}
