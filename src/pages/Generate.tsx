@@ -8,60 +8,60 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sparkles, Download, Heart, Loader2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Generate = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPattern, setGeneratedPattern] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    projectType: "",
+    skillLevel: "",
+    yarnWeight: "",
+    size: "",
+    description: ""
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const handleGenerate = async () => {
+    // Validate required fields
+    if (!formData.projectType || !formData.skillLevel || !formData.description) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in project type, skill level, and description.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsGenerating(true);
-    // Simulate AI generation
-    setTimeout(() => {
-      setGeneratedPattern(`
-**Cozy Winter Scarf Pattern**
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-crochet-pattern', {
+        body: formData
+      });
 
-**Materials:**
-- 200g worsted weight yarn in main color
-- 50g worsted weight yarn in accent color
-- 5.5mm crochet hook
-- Yarn needle
+      if (error) {
+        throw error;
+      }
 
-**Finished Size:** 8" x 60"
-
-**Instructions:**
-
-**Foundation Chain:** Ch 25
-
-**Row 1:** Sc in 2nd ch from hook and in each ch across. Turn. (24 sc)
-
-**Row 2:** Ch 1, sc in each sc across. Turn.
-
-**Rows 3-10:** Repeat Row 2.
-
-**Row 11:** Change to accent color, ch 1, sc in each sc across. Turn.
-
-**Rows 12-15:** Continue with accent color, ch 1, sc in each sc across. Turn.
-
-**Row 16:** Change back to main color, ch 1, sc in each sc across. Turn.
-
-**Repeat pattern:** Continue alternating between 10 rows main color and 4 rows accent color until piece measures 60" or desired length.
-
-**Finishing:** 
-1. Weave in all ends
-2. Block lightly if desired
-3. Add fringe if desired (cut 5" strands, fold in half, pull through edge stitches)
-
-**Notes:** 
-- Maintain consistent tension throughout
-- Count stitches regularly to ensure even edges
-- Feel free to adjust colors to your preference
-      `);
-      setIsGenerating(false);
+      setGeneratedPattern(data.pattern);
       toast({
         title: "Pattern Generated!",
         description: "Your custom crochet pattern is ready.",
       });
-    }, 3000);
+    } catch (error) {
+      console.error('Error generating pattern:', error);
+      toast({
+        title: "Generation Failed",
+        description: "There was an error generating your pattern. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -94,7 +94,7 @@ const Generate = () => {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="project-type">Project Type</Label>
-                <Select>
+                <Select value={formData.projectType} onValueChange={(value) => handleInputChange('projectType', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select project type" />
                   </SelectTrigger>
@@ -113,7 +113,7 @@ const Generate = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="skill-level">Skill Level</Label>
-                <Select>
+                <Select value={formData.skillLevel} onValueChange={(value) => handleInputChange('skillLevel', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select skill level" />
                   </SelectTrigger>
@@ -127,7 +127,7 @@ const Generate = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="yarn-weight">Yarn Weight</Label>
-                <Select>
+                <Select value={formData.yarnWeight} onValueChange={(value) => handleInputChange('yarnWeight', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select yarn weight" />
                   </SelectTrigger>
@@ -144,7 +144,12 @@ const Generate = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="size">Size</Label>
-                <Input id="size" placeholder="e.g., Adult Medium, 12 inches" />
+                <Input 
+                  id="size" 
+                  placeholder="e.g., Adult Medium, 12 inches" 
+                  value={formData.size}
+                  onChange={(e) => handleInputChange('size', e.target.value)}
+                />
               </div>
 
               <div className="space-y-2">
@@ -153,6 +158,8 @@ const Generate = () => {
                   id="description"
                   placeholder="Describe your project in detail. Include style, colors, special features, or any specific requirements..."
                   className="min-h-[100px]"
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
                 />
               </div>
 
