@@ -54,14 +54,22 @@ const Generate = () => {
       });
     } catch (error) {
       console.error('Error generating pattern:', error);
-      toast({
-        title: "Generation Failed",
-        description: "There was an error generating your pattern. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsGenerating(false);
+      
+      // Wait 10 seconds before showing error message
+      setTimeout(() => {
+        toast({
+          title: "Generation Failed",
+          description: "There was an error generating your pattern. Please try again.",
+          variant: "destructive"
+        });
+        setIsGenerating(false);
+      }, 10000);
+      
+      // Don't set isGenerating to false immediately - let the timeout handle it
+      return;
     }
+    
+    setIsGenerating(false);
   };
 
   return (
