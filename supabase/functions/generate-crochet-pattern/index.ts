@@ -49,11 +49,11 @@ Please provide a complete crochet pattern that includes:
 
 Format the pattern professionally with clear sections and proper crochet abbreviations. Make sure the pattern is technically accurate and achievable for the specified skill level.`;
 
-    // Try multiple models in order of preference
+    // Try multiple text generation models in order of preference
     const models = [
-      'microsoft/DialoGPT-medium',
-      'facebook/blenderbot-400M-distill',
-      'EleutherAI/gpt-neo-125M'
+      'microsoft/DialoGPT-large',
+      'gpt2-medium',
+      'distilgpt2'
     ];
 
     let generatedText = '';
@@ -106,64 +106,171 @@ Format the pattern professionally with clear sections and proper crochet abbrevi
       }
     }
 
-    // If no AI model worked, provide a professional fallback pattern
+    // If no AI model worked, provide skill-level specific fallback patterns
     if (!generatedText.trim()) {
-      console.log('All AI models failed, using fallback pattern');
-      generatedText = `${projectType.toUpperCase()} PATTERN
+      console.log('All AI models failed, using skill-level specific fallback pattern');
+      
+      const getSkillLevelPattern = () => {
+        const baseInfo = `${projectType.toUpperCase()} PATTERN
 
-SKILL LEVEL: ${skillLevel}
+SKILL LEVEL: ${skillLevel.toUpperCase()}
+PROJECT DESCRIPTION: ${description}
 
 MATERIALS:
-- ${yarnWeight} weight yarn (amount varies by size)
-- Appropriate hook size for chosen yarn weight
+- ${yarnWeight} weight yarn`;
+
+        if (skillLevel === 'beginner') {
+          return `${baseInfo} (approximately 300-500 yards)
+- Size H/8 (5.0mm) crochet hook
 - Scissors
 - Yarn/tapestry needle for sewing
-- Stitch markers (optional)
 
-FINISHED SIZE: ${size || 'Adjust to desired size'}
+FINISHED SIZE: ${size || 'Approximately 12" x 12"'}
 
-GAUGE:
-Work a 4" x 4" gauge swatch to determine your personal tension and adjust hook size as needed.
+GAUGE: 14 sc and 16 rows = 4" in single crochet
+
+ABBREVIATIONS:
+- ch = chain
+- sc = single crochet
+- sl st = slip stitch
+- st(s) = stitch(es)
+- rep = repeat
+
+BEGINNER-FRIENDLY NOTES:
+This pattern uses only single crochet stitches, making it perfect for beginners. Take your time and count your stitches at the end of each row.
+
+INSTRUCTIONS:
+
+Foundation: Ch 43
+Row 1: Sc in 2nd ch from hook and in each ch across. Turn. (42 sc)
+Row 2: Ch 1, sc in each st across. Turn.
+Rows 3-48: Repeat Row 2.
+
+BORDER:
+Rnd 1: Ch 1, work sc evenly around entire piece, working 3 sc in each corner. Join with sl st.
+Rnd 2: Ch 1, sc in each st around, working 3 sc in corner sts. Join with sl st.
+
+FINISHING:
+- Weave in all loose ends securely
+- Block to measurements
+
+BEGINNER TIPS:
+- Keep your tension consistent
+- Count your stitches frequently
+- Mark your corners with stitch markers`;
+
+        } else if (skillLevel === 'intermediate') {
+          return `${baseInfo} (approximately 400-700 yards)
+- Size G/6 (4.0mm) crochet hook
+- Scissors
+- Yarn/tapestry needle for sewing
+- Stitch markers
+
+FINISHED SIZE: ${size || 'Approximately 14" x 14"'}
+
+GAUGE: 16 dc and 8 rows = 4" in double crochet
 
 ABBREVIATIONS:
 - ch = chain
 - sc = single crochet
 - hdc = half double crochet
 - dc = double crochet
+- tr = treble crochet
 - sl st = slip stitch
 - st(s) = stitch(es)
 - rep = repeat
-- beg = beginning
-- rnd = round
+- sk = skip
 
-SPECIAL NOTES:
-This is a ${skillLevel} level pattern. ${description}
+INTERMEDIATE TECHNIQUES:
+This pattern incorporates texture stitches and shaping techniques suitable for intermediate crocheters.
 
 INSTRUCTIONS:
 
-Foundation:
-Ch 25 (or desired width + 5 for turning chains)
+Foundation: Ch 58
+Row 1: Dc in 4th ch from hook and in each ch across. Turn. (56 dc)
+Row 2: Ch 3 (counts as dc), *dc in next st, hdc in next st; rep from * across, dc in last st. Turn.
+Row 3: Ch 3, *hdc in next st, dc in next st; rep from * across, dc in last st. Turn.
+Row 4: Ch 3, dc in each st across. Turn.
+Rows 5-6: Repeat Rows 2-3.
+Rows 7-32: Repeat Rows 2-6.
 
-Row 1: Sc in 2nd ch from hook and in each ch across. Turn. (24 sc)
-
-Row 2: Ch 1, sc in each st across. Turn.
-
-Repeat Row 2 until piece measures desired length.
-
-Border (optional):
-Work 1 round of sc evenly around entire piece, working 3 sc in each corner.
+DECORATIVE BORDER:
+Rnd 1: Ch 1, sc evenly around, working 3 sc in each corner. Join.
+Rnd 2: Ch 3, *sk next st, 5 dc in next st, sk next st, sl st in next st; rep from * around. Join.
 
 FINISHING:
-- Weave in all loose ends
-- Block to measurements if needed
-- Steam lightly if yarn care allows
+- Weave in ends
+- Steam block to open up stitch pattern`;
 
-CUSTOMIZATION TIPS:
-- Adjust foundation chain length for different widths
-- Change yarn weight and hook size for different textures
-- Add decorative stitches or color changes as desired
+        } else { // advanced
+          return `${baseInfo} (approximately 600-1000 yards)
+- Size F/5 (3.75mm) crochet hook
+- Size E/4 (3.5mm) crochet hook (for edging)
+- Scissors
+- Yarn/tapestry needle for sewing
+- Stitch markers
+- Row counter (recommended)
 
-Created with love for your crafting journey!`;
+FINISHED SIZE: ${size || 'Approximately 16" x 16"'}
+
+GAUGE: 18 dc and 9 rows = 4" in double crochet with larger hook
+
+ABBREVIATIONS:
+- ch = chain
+- sc = single crochet
+- hdc = half double crochet
+- dc = double crochet
+- tr = treble crochet
+- dtr = double treble crochet
+- sl st = slip stitch
+- st(s) = stitch(es)
+- rep = repeat
+- sk = skip
+- cl = cluster
+- pc = popcorn
+- fdc = foundation double crochet
+
+ADVANCED TECHNIQUES USED:
+- Complex stitch combinations
+- Lacework patterns
+- Foundation stitches
+- Intricate shaping
+
+SPECIAL STITCHES:
+Popcorn (pc): 5 dc in indicated st, drop loop from hook, insert hook in first dc of group, pick up dropped loop and pull through.
+Cluster (cl): *Yo, insert hook in indicated st, yo and pull up a loop, yo and pull through 2 loops; rep from * 2 more times in same st, yo and pull through all 4 loops on hook.
+
+INSTRUCTIONS:
+
+Foundation: Work 72 fdc with larger hook
+Row 1 (RS): Ch 3 (counts as dc), dc in each fdc across. Turn. (72 dc)
+Row 2: Ch 3, *dc in next 3 sts, pc in next st; rep from * across to last 4 sts, dc in last 4 sts. Turn.
+Row 3: Ch 3, dc in each st across. Turn.
+Row 4: Ch 3, dc in next st, *pc in next st, dc in next 3 sts; rep from * across to last 2 sts, pc in next st, dc in last st. Turn.
+Row 5: Ch 3, dc in each st across. Turn.
+Rows 6-45: Rep Rows 2-5.
+
+INTRICATE LACE BORDER:
+Change to smaller hook.
+Rnd 1: Ch 1, sc evenly around, working 3 sc in each corner. Join.
+Rnd 2: Ch 1, sc in first st, *ch 5, sk 2 sts, sc in next st; rep from * around. Join.
+Rnd 3: Sl st to center of first ch-5 sp, ch 1, *(sc, hdc, 3 dc, hdc, sc) in ch-5 sp; rep from * around. Join.
+Rnd 4: Ch 1, *sc between shells, ch 7; rep from * around. Join.
+Rnd 5: Sl st to center of first ch-7 sp, ch 1, *(sc, hdc, 5 dc, hdc, sc) in ch-7 sp; rep from * around. Join.
+
+FINISHING:
+- Weave in all ends meticulously
+- Wet block aggressively to open lace pattern
+- Steam press if yarn permits
+
+ADVANCED NOTES:
+- Maintain consistent tension throughout lacework sections
+- Use lifelines every 10 rows for complex sections
+- Consider yarn substitutions carefully to maintain drape`;
+        }
+      };
+
+      generatedText = getSkillLevelPattern();
     }
 
     console.log(`Pattern generated successfully${modelUsed ? ` using ${modelUsed}` : ' using fallback'}`);
