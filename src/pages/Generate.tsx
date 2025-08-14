@@ -55,7 +55,7 @@ const Generate = () => {
     } catch (error) {
       console.error('Error generating pattern:', error);
       
-      // Wait 10 seconds before showing error message
+      // Wait 1 minute before showing error message
       setTimeout(() => {
         toast({
           title: "Generation Failed",
@@ -63,7 +63,7 @@ const Generate = () => {
           variant: "destructive"
         });
         setIsGenerating(false);
-      }, 10000);
+      }, 60000);
       
       // Don't set isGenerating to false immediately - let the timeout handle it
       return;
